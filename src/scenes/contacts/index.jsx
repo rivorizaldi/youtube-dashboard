@@ -152,8 +152,94 @@ const Contacts = () => {
   }, []);
 
   return (
-    <Box m="20px">
-      <Header title="VIDEOS" subtitle="List of Video Insight Data" />
+    <>
+      <Box m="20px">
+        <Header title="VIDEOS" subtitle="List of Video Insight Data" />
+        <Box
+          display="flex"
+          backgroundColor={colors.primary[400]}
+          borderRadius="3px"
+          marginBottom={"8px"}
+        >
+          <InputBase
+            sx={{ ml: 2, flex: 1 }}
+            value={videoUrl}
+            placeholder="Enter Youtube Video Url"
+            onChange={(e) => setVideoUrl(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                handleFetch(videoUrl);
+                setVideoUrl("");
+              }
+            }}
+          />
+          <IconButton type="button" sx={{ p: 1 }}>
+            <SearchIcon />
+          </IconButton>
+        </Box>
+        <VideoGrid
+          videos={videos}
+          handleDelete={(url) => {
+            const updatedVideos = videos.filter(
+              (video) => video.videoUrl !== url
+            );
+            localStorage.setItem("videos", JSON.stringify(updatedVideos));
+            setVideos(updatedVideos);
+          }}
+        />
+        {videos.length > 0 && (
+          <Box height="30vh">
+            {isLoading ? (
+              <Skeleton height={"30vh"} />
+            ) : (
+              <LineChart data={transformVideoData(videos)} />
+            )}
+          </Box>
+        )}
+
+        <Box
+          m="40px 0 0 0"
+          height="75vh"
+          sx={{
+            "& .MuiDataGrid-root": {
+              border: "none",
+            },
+            "& .MuiDataGrid-cell": {
+              borderBottom: "none",
+            },
+            "& .name-column--cell": {
+              color: colors.greenAccent[300],
+            },
+            "& .MuiDataGrid-columnHeaders": {
+              backgroundColor: colors.blueAccent[700],
+              borderBottom: "none",
+            },
+            "& .MuiDataGrid-virtualScroller": {
+              backgroundColor: colors.primary[400],
+            },
+            "& .MuiDataGrid-footerContainer": {
+              borderTop: "none",
+              backgroundColor: colors.blueAccent[700],
+            },
+            "& .MuiCheckbox-root": {
+              color: `${colors.greenAccent[200]} !important`,
+            },
+            "& .MuiDataGrid-toolbarContainer .MuiButton-text": {
+              color: `${colors.grey[100]} !important`,
+            },
+          }}
+        >
+          <DataGridCustom
+            data={videos}
+            isLoading={isLoading}
+            setIsLoading={setIsLoading}
+            setFileTypeErrorNotification={setFileTypeErrorNotification}
+            setErrorNetworkNotification={setErrorNetworkNotification}
+            setErrorNotification={setErrorNotification}
+            setVideos={setVideos}
+          />
+        </Box>
+      </Box>
       <SimpleSnackbar
         isOpen={successNotification}
         message={
@@ -190,90 +276,7 @@ const Contacts = () => {
         }
         setIsOpen={setFileTypeErrorNotification}
       />
-      <Box
-        display="flex"
-        backgroundColor={colors.primary[400]}
-        borderRadius="3px"
-        marginBottom={"8px"}
-      >
-        <InputBase
-          sx={{ ml: 2, flex: 1 }}
-          value={videoUrl}
-          placeholder="Enter Youtube Video Url"
-          onChange={(e) => setVideoUrl(e.target.value)}
-          onKeyDown={(e) => {
-            if (e.key === "Enter") {
-              handleFetch(videoUrl);
-              setVideoUrl("");
-            }
-          }}
-        />
-        <IconButton type="button" sx={{ p: 1 }}>
-          <SearchIcon />
-        </IconButton>
-      </Box>
-      <VideoGrid
-        videos={videos}
-        handleDelete={(url) => {
-          const updatedVideos = videos.filter(
-            (video) => video.videoUrl !== url
-          );
-          localStorage.setItem("videos", JSON.stringify(updatedVideos));
-          setVideos(updatedVideos);
-        }}
-      />
-      <Box height="30vh">
-        {isLoading ? (
-          <Skeleton height={"30vh"} />
-        ) : (
-          <LineChart
-            data={videos.length < 1 ? videos : transformVideoData(videos)}
-          />
-        )}
-      </Box>
-      <Box
-        m="40px 0 0 0"
-        height="75vh"
-        sx={{
-          "& .MuiDataGrid-root": {
-            border: "none",
-          },
-          "& .MuiDataGrid-cell": {
-            borderBottom: "none",
-          },
-          "& .name-column--cell": {
-            color: colors.greenAccent[300],
-          },
-          "& .MuiDataGrid-columnHeaders": {
-            backgroundColor: colors.blueAccent[700],
-            borderBottom: "none",
-          },
-          "& .MuiDataGrid-virtualScroller": {
-            backgroundColor: colors.primary[400],
-          },
-          "& .MuiDataGrid-footerContainer": {
-            borderTop: "none",
-            backgroundColor: colors.blueAccent[700],
-          },
-          "& .MuiCheckbox-root": {
-            color: `${colors.greenAccent[200]} !important`,
-          },
-          "& .MuiDataGrid-toolbarContainer .MuiButton-text": {
-            color: `${colors.grey[100]} !important`,
-          },
-        }}
-      >
-        <DataGridCustom
-          data={videos}
-          isLoading={isLoading}
-          setIsLoading={setIsLoading}
-          setFileTypeErrorNotification={setFileTypeErrorNotification}
-          setErrorNetworkNotification={setErrorNetworkNotification}
-          setErrorNotification={setErrorNotification}
-          setVideos={setVideos}
-        />
-      </Box>
-    </Box>
+    </>
   );
 };
 
