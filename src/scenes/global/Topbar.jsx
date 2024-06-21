@@ -1,15 +1,14 @@
 import DarkModeOutlinedIcon from "@mui/icons-material/DarkModeOutlined";
 import LightModeOutlinedIcon from "@mui/icons-material/LightModeOutlined";
-import NotificationsOutlinedIcon from "@mui/icons-material/NotificationsOutlined";
-import PersonOutlinedIcon from "@mui/icons-material/PersonOutlined";
-import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
+import PersonOutlinedIcon from "@mui/icons-material/LogoutOutlined";
 import { Box, IconButton, useTheme } from "@mui/material";
 import { useContext } from "react";
-import { ColorModeContext, tokens } from "../../theme";
+import { useNavigate } from "react-router-dom";
+import { ColorModeContext } from "../../theme";
 
 const Topbar = () => {
   const theme = useTheme();
-  const colors = tokens(theme.palette.mode);
+  const navigate = useNavigate();
   const colorMode = useContext(ColorModeContext);
 
   return (
@@ -35,13 +34,13 @@ const Topbar = () => {
             <LightModeOutlinedIcon />
           )}
         </IconButton>
-        <IconButton>
-          <NotificationsOutlinedIcon />
-        </IconButton>
-        <IconButton>
-          <SettingsOutlinedIcon />
-        </IconButton>
-        <IconButton>
+
+        <IconButton
+          onClick={() => {
+            localStorage.setItem("isLogged", "false");
+            navigate("/login");
+          }}
+        >
           <PersonOutlinedIcon />
         </IconButton>
       </Box>

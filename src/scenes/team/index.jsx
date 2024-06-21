@@ -3,6 +3,8 @@ import LockOpenOutlinedIcon from "@mui/icons-material/LockOpenOutlined";
 import SecurityOutlinedIcon from "@mui/icons-material/SecurityOutlined";
 import { Box, Typography, useTheme } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import Header from "../../components/Header";
 import { mockDataTeam } from "../../data/mockData";
 import { tokens } from "../../theme";
@@ -10,6 +12,16 @@ import { tokens } from "../../theme";
 const Team = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const isLogged = localStorage.getItem("isLogged");
+    if (isLogged !== "true") {
+      navigate("/login");
+    }
+  }, []);
+
   const columns = [
     { field: "id", headerName: "ID" },
     {

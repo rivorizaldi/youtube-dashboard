@@ -8,7 +8,6 @@ import { ColorModeContext, useMode } from "../theme";
 const Layout = ({ children }) => {
   const [theme, colorMode] = useMode();
   const { isCollapsed } = useSidebar();
-  // const [isSidebar, setIsSidebar] = useState(true);
 
   const adjustWidth = isCollapsed ? "80px" : "270px";
   return (

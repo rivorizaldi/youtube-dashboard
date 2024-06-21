@@ -1,12 +1,24 @@
 import { Box, Typography, useTheme } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
-import { tokens } from "../../theme";
-import { mockDataInvoices } from "../../data/mockData";
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import Header from "../../components/Header";
+import { mockDataInvoices } from "../../data/mockData";
+import { tokens } from "../../theme";
 
 const Invoices = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const isLogged = localStorage.getItem("isLogged");
+    if (isLogged !== "true") {
+      navigate("/login");
+    }
+  }, []);
+
   const columns = [
     { field: "id", headerName: "ID" },
     {

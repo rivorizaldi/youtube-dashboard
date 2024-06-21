@@ -1,4 +1,5 @@
 import {
+  Alert,
   Box,
   Button,
   Container,
@@ -7,7 +8,7 @@ import {
   ThemeProvider,
   Typography,
 } from "@mui/material";
-import React from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ColorModeContext, tokens, useMode } from "../../theme";
 
@@ -15,6 +16,17 @@ export const Login = () => {
   const [theme, colorMode] = useMode();
   const colors = tokens(theme.palette.mode);
   const navigate = useNavigate();
+
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState(false);
+
+  //   useEffect(() => {
+  //     const isLogged = localStorage.getItem("isLogged");
+  //     if (isLogged) {
+  //       navigate("/");
+  //     }
+  //   }, []);
 
   return (
     <ColorModeContext.Provider value={colorMode}>
@@ -33,8 +45,15 @@ export const Login = () => {
             <Typography component="h1" variant="h5">
               Login
             </Typography>
+            {error && <Alert severity="error">Password Atau Email Salah</Alert>}
+
             <Box component="form" sx={{ mt: 1 }}>
               <TextField
+                value={email}
+                onChange={(event) => {
+                  setEmail(event.target.value);
+                  setError(false);
+                }}
                 variant="filled"
                 margin="normal"
                 required
@@ -46,6 +65,11 @@ export const Login = () => {
                 autoFocus
               />
               <TextField
+                value={password}
+                onChange={(event) => {
+                  setPassword(event.target.value);
+                  setError(false);
+                }}
                 variant="filled"
                 margin="normal"
                 required
@@ -58,9 +82,17 @@ export const Login = () => {
               />
               <Button
                 onClick={() => {
+                  const isAuthenticated =
+                    email === "admin@gmail.com" && password === "admin123";
+
+                  if (!isAuthenticated) {
+                    setError(true);
+                    return;
+                  }
+
+                  localStorage.setItem("isLogged", "true");
                   navigate("/");
                 }}
-                type="submit"
                 fullWidth
                 variant="contained"
                 color="primary"

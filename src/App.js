@@ -2,7 +2,6 @@ import { Route, Routes } from "react-router-dom";
 import Layout from "./components/Layout";
 import Contacts from "./scenes/contacts";
 import Dashboard from "./scenes/dashboard";
-import Invoices from "./scenes/invoices";
 import { Login } from "./scenes/login";
 import Team from "./scenes/team";
 
@@ -33,14 +32,14 @@ function App() {
           </Layout>
         }
       />
-      <Route
+      {/* <Route
         path="/invoices"
         element={
           <Layout>
             <Invoices />
           </Layout>
         }
-      />
+      /> */}
       <Route path="/login" element={<Login />} />
       {/* <Route path="/form" element={<Form />} /> */}
       {/* <Route path="/bar" element={<Bar />} /> */}
